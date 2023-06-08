@@ -103,6 +103,16 @@ async def bot(ctx):
     except discord.DiscordException as e:
         print(f"Error when executing bot command: {e}")
 
+@counter_bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("Sorry, I don't recognize that command.")
+    elif isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("You're missing some arguments for that command.")
+    else:
+        await ctx.send("An error occurred while processing your command.")
+        print(f"An error occurred while handling command: {error}")
+
 try:
     counter_bot.run(token)
 except discord.LoginFailure as e:
